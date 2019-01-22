@@ -1,26 +1,24 @@
-package com.desafio.agibank.importalotes.read;
+package com.desafio.agibank.importalotes.processor;
 
-import com.desafio.agibank.importalotes.infrastructure.helpers.FileReaderHelper;
+import com.desafio.agibank.importalotes.infrastructure.processor.ProcessImportFiles;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class FileReaderTest {
+public class ProcessorTest {
 
     @Autowired
-    private FileReaderHelper fileReader;
+    private ProcessImportFiles processImportFiles;
 
     @Test
-    public void readFileTests() throws IOException {
-        fileReader.readFiles();
+    public void processRunSuccess() throws Exception {
+        processImportFiles.run();
         assertTrue(Boolean.TRUE);
     }
 }

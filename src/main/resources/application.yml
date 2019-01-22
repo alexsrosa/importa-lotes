@@ -1,0 +1,10 @@
+appconfig:
+  process:
+    report: true
+  file:
+    out: src/main/resources/data/out/
+    pattern: classpath:data/in/*.dat
+    delimiter:
+      register: ç
+      items: ','
+      item: '-'
