@@ -6,17 +6,22 @@ import com.desafio.agibank.importalotes.infrastructure.builder.SalesBuilder;
 import com.desafio.agibank.importalotes.infrastructure.builder.SalesmanBuilder;
 import com.desafio.agibank.importalotes.infrastructure.dto.ReportDto;
 import com.desafio.agibank.importalotes.infrastructure.helpers.FileReaderHelper;
-import com.desafio.agibank.importalotes.infrastructure.reports.GeneratorReport;
+import com.desafio.agibank.importalotes.infrastructure.reports.FilesReport;
 import com.desafio.agibank.importalotes.infrastructure.service.ClientService;
 import com.desafio.agibank.importalotes.infrastructure.service.SalesService;
 import com.desafio.agibank.importalotes.infrastructure.service.SalesmanService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe de processamento da importação dos arquivos.
+ *
+ * @author <a href="mailto:alexsrosa@ntconsult.com.br">alexsrosa</a>
+ * @since 23/01/2019 11:20:04
+ */
 @Component
 public class ProcessImportFiles {
 
@@ -27,7 +32,13 @@ public class ProcessImportFiles {
     private final SalesService salesService;
     private final SalesmanService salesmanService;
     private final ClientService clientService;
-    private final GeneratorReport generatorReport;
+    private final FilesReport generatorReport;
+
+    @Value("${appconfig.file.in}")
+    private String locationIn;
+
+    @Value("${appconfig.file.extensionpattern}")
+    private String extensionPattern;
 
     public ProcessImportFiles(FileReaderHelper fileReader,
             ClientBuilder clientBuilder,
@@ -35,7 +46,8 @@ public class ProcessImportFiles {
             SalesBuilder salesBuilder,
             SalesService salesService,
             SalesmanService salesmanService,
-            ClientService clientService, GeneratorReport generatorReport) {
+            ClientService clientService,
+            FilesReport generatorReport) {
         this.fileReader = fileReader;
         this.clientBuilder = clientBuilder;
         this.salesmanBuilder = salesmanBuilder;
@@ -47,38 +59,47 @@ public class ProcessImportFiles {
     }
 
     public void run() throws Exception {
-        HashMap<String, List<String>> stringListHashMap = fileReader.readFiles();
-
-        for (Map.Entry<String, List<String>> entry : stringListHashMap.entrySet()) {
-            clientService.clear();
-            salesService.clear();
-            salesmanService.clear();
-
-            for (String line : entry.getValue()) {
-                switch (DataType.getValue(line.substring(0, 3))) {
-                    case CLIENT:
-                        clientService.create(clientBuilder.builder(line));
-                        break;
-                    case SALES:
-                        salesService.create(salesBuilder.builder(line));
-                        break;
-                    case SALESMAN:
-                        salesmanService.create(salesmanBuilder.builder(line));
-                        break;
-                }
-            }
-
-            generateReport(entry);
+        for (Map.Entry<String, List<String>> filesMap : fileReader.readFiles(locationIn, extensionPattern).entrySet()) {
+            clearObjects();
+            parseValuesToObjects(filesMap);
+            generateReport(filesMap.getKey());
         }
     }
 
-    private void generateReport(Map.Entry<String, List<String>> entry) throws IOException {
+    private void parseValuesToObjects(Map.Entry<String, List<String>> entry) throws Exception {
+        for (String line : entry.getValue()) {
+            switch (getDataType(line)) {
+                case CLIENT:
+                    clientService.create(clientBuilder.builder(line));
+                    break;
+                case SALES:
+                    salesService.create(salesBuilder.builder(line));
+                    break;
+                case SALESMAN:
+                    salesmanService.create(salesmanBuilder.builder(line));
+                    break;
+            }
+        }
+    }
+
+    private DataType getDataType(String line) throws Exception {
+        return DataType.getValue(line.substring(0, 3));
+    }
+
+    private void clearObjects() {
+        clientService.clear();
+        salesService.clear();
+        salesmanService.clear();
+    }
+
+    private void generateReport(String fileName) {
         generatorReport.generate(
                 new ReportDto.Builder()
-                        .clientsAmount(1)
-                        .salesmanAmount(1)
-                        .saleIdMoreExpensive("50")
-                        .worstSeller("4545").build()
-                , entry.getKey());
+                        .totalCustomers(clientService.getTotalCustomers())
+                        .totalSalesman(salesmanService.getTotalSalesman())
+                        .saleIdMoreExpensive(salesService.getSaleIdMoreExpensive())
+                        .worstSeller(salesService.getWorstSeller())
+                        .fileName(fileName)
+                        .build());
     }
 }

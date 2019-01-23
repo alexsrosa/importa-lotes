@@ -2,8 +2,10 @@ appconfig:
   process:
     report: true
   file:
-    out: src/main/resources/data/out/
-    pattern: classpath:data/in/*.dat
+    in: data/in
+    out: data/out/
+    extensionpattern: dat
+    includenamedone: .done.
     delimiter:
       register: ç
       items: ','

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.IOException;
-
 import static org.junit.Assert.assertTrue;
 
 @SpringBootTest
@@ -19,7 +17,7 @@ public class FileReaderTest {
     private FileReaderHelper fileReader;
 
     @Test
-    public void readFileTests() throws IOException {
+    public void readFileTests() throws Exception {
         fileReader.readFiles();
         assertTrue(Boolean.TRUE);
     }

@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Classe de serviço do objeto {@link Sales}.
+ *
+ * @author <a href="mailto:alexsrosa@ntconsult.com.br">alexsrosa</a>
+ * @since 23/01/2019 11:22:06
+ */
 @Service
 public class SalesService {
 
@@ -25,5 +31,13 @@ public class SalesService {
 
     public List<Sales> findAll() {
         return salesRepository.findAll();
+    }
+
+    public String getSaleIdMoreExpensive() {
+        return salesRepository.getSaleIdMoreExpensive();
+    }
+
+    public String getWorstSeller() {
+        return salesRepository.getWorstSeller();
     }
 }

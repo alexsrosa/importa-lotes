@@ -6,6 +6,7 @@ public class ReportDto {
     private Integer salesmanAmount;
     private String saleIdMoreExpensive;
     private String worstSeller;
+    private String fileName;
 
     public static class Builder {
 
@@ -13,13 +14,14 @@ public class ReportDto {
         private Integer salesmanAmount;
         private String saleIdMoreExpensive;
         private String worstSeller;
+        private String fileName;
 
-        public Builder clientsAmount(Integer clientsAmount) {
+        public Builder totalCustomers(Integer clientsAmount) {
             this.clientsAmount = clientsAmount;
             return this;
         }
 
-        public Builder salesmanAmount(Integer salesmanAmount) {
+        public Builder totalSalesman(Integer salesmanAmount) {
             this.salesmanAmount = salesmanAmount;
             return this;
         }
@@ -34,6 +36,11 @@ public class ReportDto {
             return this;
         }
 
+        public Builder fileName(String fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+
         public ReportDto build() {
             return new ReportDto(this);
         }
@@ -44,6 +51,7 @@ public class ReportDto {
         this.salesmanAmount = builder.salesmanAmount;
         this.saleIdMoreExpensive = builder.saleIdMoreExpensive;
         this.worstSeller = builder.worstSeller;
+        this.fileName = builder.fileName;
     }
 
     public Integer getClientsAmount() {
@@ -76,5 +84,13 @@ public class ReportDto {
 
     public void setWorstSeller(String worstSeller) {
         this.worstSeller = worstSeller;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

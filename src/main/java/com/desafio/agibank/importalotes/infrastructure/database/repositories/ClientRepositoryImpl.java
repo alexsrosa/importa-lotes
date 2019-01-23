@@ -26,4 +26,8 @@ public class ClientRepositoryImpl extends ClientRepository {
     public List<Client> findAll() {
         return clientList;
     }
+
+    public Integer getTotalCustomers() {
+        return clientList.size();
+    }
 }

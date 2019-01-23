@@ -26,4 +26,8 @@ public class SalesmanRepositoryImpl extends SalesmanRepository {
     public List<Salesman> findAll() {
         return salesmenList;
     }
+
+    public Integer getTotalSalesman() {
+        return salesmenList.size();
+    }
 }

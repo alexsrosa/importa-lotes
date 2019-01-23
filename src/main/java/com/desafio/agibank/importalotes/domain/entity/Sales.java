@@ -13,6 +13,7 @@ public class Sales {
     private String saleId;
     private List<Item> items;
     private String SalesmanName;
+    private double totalSale;
 
     public Sales() {
         items = new ArrayList<>();
@@ -56,5 +57,13 @@ public class Sales {
 
     public void setSalesmanName(String salesmanName) {
         SalesmanName = salesmanName;
+    }
+
+    public double getTotalSale() {
+        return totalSale;
+    }
+
+    public void setTotalSale(double totalSale) {
+        this.totalSale = totalSale;
     }
 }
