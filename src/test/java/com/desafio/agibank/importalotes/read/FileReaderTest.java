@@ -17,8 +17,8 @@ public class FileReaderTest {
     private FileReaderHelper fileReader;
 
     @Test
-    public void readFileTests() throws Exception {
-        fileReader.readFiles();
+    public void readFileTests() {
+        fileReader.readFiles("data/in", "dat");
         assertTrue(Boolean.TRUE);
     }
 }

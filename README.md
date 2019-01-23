@@ -1,5 +1,8 @@
 #### Olá, seja bem vindo ao **Projeto de importação de arquivos em lote**!
 
+[![Build Status](https://travis-ci.com/alexsrosa/importa-lotes.svg?branch=master)](https://travis-ci.com/alexsrosa/importa-lotes)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=alexsrosa%3Aimporta-lotes&metric=alert_status)](https://sonarcloud.io/dashboard?id=alexsrosa%3Aimporta-lotes)
+
 _Segue alguns passos para instalação e utilização:_
 
 #### Instalação (Sem IDE):
